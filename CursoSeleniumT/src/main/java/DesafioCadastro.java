@@ -1,6 +1,8 @@
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -12,31 +14,37 @@ public class DesafioCadastro {
 
 	String url = "https://wcaquino.me/selenium/componentes.html";
 	
-	@Test
-	public void deveFazerCadastroCompleto() {
-		WebDriver driver = new FirefoxDriver();
+	private DSL dsl;
+	
+	private WebDriver driver;
+	
+	@Before
+	public void inicializar() {
+		driver = new FirefoxDriver();
 		driver.manage().window().maximize();
 		driver.get(url);
+		dsl = new DSL(driver);
+	}
+	
+	@After
+	public void finaliza() {
+		driver.quit();
+	}
+	
+	
+	@Test
+	public void deveFazerCadastroCompleto() {
+		dsl.escreve("elementosForm:nome", "Eduardo");		
+		dsl.escreve("elementosForm:sobrenome", "Rufino");	
+		dsl.clicaRadio("elementosForm:sexo:0");		
+		dsl.clicaRadio("elementosForm:comidaFavorita:0");		
+		dsl.selecionarCombo("elementosForm:escolaridade", "Superior");		
+		dsl.selecionarCombo("elementosForm:esportes", "O que eh esporte?");
 		
-		driver.findElement(By.id("elementosForm:nome")).sendKeys("Eduardo");
 		
-		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Rufino");
+		dsl.escreve("elementosForm:sugestoes", "Aprender Selenium com Java!");
 		
-		driver.findElement(By.id("elementosForm:sexo:0")).click();
-		
-		driver.findElement(By.id("elementosForm:comidaFavorita:0")).click();
-		
-		WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));		
-		Select select = new Select(element);		
-		select.selectByVisibleText("Superior");
-		
-		element = driver.findElement(By.id("elementosForm:esportes"));
-		select = new Select(element);
-		select.selectByVisibleText("O que eh esporte?");
-		
-		driver.findElement(By.id("elementosForm:sugestoes")).sendKeys("Aprender Selenium com Java!");
-		
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
+		dsl.clicarBotao("elementosForm:cadastrar");
 		
 		Assert.assertTrue(driver.findElement(By.id("resultado")).getText().startsWith("Cadastrado!"));
 		Assert.assertEquals("Nome: Eduardo", driver.findElement(By.id("descNome")).getText());
@@ -46,8 +54,6 @@ public class DesafioCadastro {
 		Assert.assertEquals("Escolaridade: superior", driver.findElement(By.id("descEscolaridade")).getText());
 		Assert.assertEquals("Esportes: O que eh esporte?", driver.findElement(By.id("descEsportes")).getText());
 		Assert.assertEquals("Sugestoes: Aprender Selenium com Java!", driver.findElement(By.id("descSugestoes")).getText());
-		
-		driver.quit();
 	}
 	
 }

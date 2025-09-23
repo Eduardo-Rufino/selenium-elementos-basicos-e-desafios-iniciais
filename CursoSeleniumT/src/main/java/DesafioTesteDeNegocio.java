@@ -1,4 +1,6 @@
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -12,54 +14,49 @@ public class DesafioTesteDeNegocio {
 
 	String url = "https://wcaquino.me/selenium/componentes.html";
 	
-	@Test
-	public void deveValidarNomeObrigatorio() {
-		WebDriver driver = new FirefoxDriver();
+	private WebDriver driver;
+	
+	@Before
+	public void inicializar() {
+		driver = new FirefoxDriver();
 		driver.manage().window().maximize();
 		driver.get(url);
-		
-		driver.findElement(By.id("elementosForm:cadastrar")).click();
-		Alert alert = driver.switchTo().alert();
-		Assert.assertEquals("Nome eh obrigatorio", alert.getText());
-		alert.accept();
+	}
+	
+	@After
+	public void finaliza() {
 		driver.quit();
 	}
 	
 	@Test
+	public void deveValidarNomeObrigatorio() {		
+		driver.findElement(By.id("elementosForm:cadastrar")).click();
+		Alert alert = driver.switchTo().alert();
+		Assert.assertEquals("Nome eh obrigatorio", alert.getText());
+		alert.accept();
+	}
+	
+	@Test
 	public void deveValidarSobrenomeObrigatorio() {
-		WebDriver driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get(url);
-		
 		driver.findElement(By.id("elementosForm:nome")).sendKeys("Nome");
 		driver.findElement(By.id("elementosForm:cadastrar")).click();
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Sobrenome eh obrigatorio", alert.getText());
 		alert.accept();
-		driver.quit();
 	}
 	
 	@Test
-	public void deveValidarSexoObrigatorio() {
-		WebDriver driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get(url);
-		
+	public void deveValidarSexoObrigatorio() {		
 		driver.findElement(By.id("elementosForm:nome")).sendKeys("Nome");
 		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Sobrenome");
 		driver.findElement(By.id("elementosForm:cadastrar")).click();
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Sexo eh obrigatorio", alert.getText());
 		alert.accept();		
-		driver.quit();
 	}
 	
 	@Test
 	public void deveValitarVeganismo() {
-		WebDriver driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get(url);
-		
 		driver.findElement(By.id("elementosForm:nome")).sendKeys("Nome");
 		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Sobrenome");
 		driver.findElement(By.id("elementosForm:sexo:0")).click();
@@ -69,15 +66,10 @@ public class DesafioTesteDeNegocio {
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Tem certeza que voce eh vegetariano?", alert.getText());
 		alert.accept();		
-		driver.quit();
 	}
 	
 	@Test
 	public void deveValitarEsportista() {
-		WebDriver driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get(url);
-		
 		driver.findElement(By.id("elementosForm:nome")).sendKeys("Nome");
 		driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Sobrenome");
 		driver.findElement(By.id("elementosForm:sexo:0")).click();
@@ -89,7 +81,6 @@ public class DesafioTesteDeNegocio {
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Voce faz esporte ou nao?", alert.getText());
 		alert.accept();		
-		driver.quit();
 	}
 	
 }

@@ -1,4 +1,6 @@
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
@@ -10,26 +12,33 @@ public class TestAlert {
 	
 	String url = "https://wcaquino.me/selenium/componentes.html";
 	
-	@Test
-	public void deveInteragirComAlertSimples() {
-		WebDriver driver = new FirefoxDriver();
+	private WebDriver driver;
+	
+	@Before
+	public void inicializar() {
+		driver = new FirefoxDriver();
 		driver.manage().window().maximize();
 		driver.get(url);
-		
+	}
+	
+	@After
+	public void finaliza() {
+		driver.quit();
+	}
+	
+	
+	@Test
+	public void deveInteragirComAlertSimples() {
 		driver.findElement(By.id("alert")).click();
 		Alert alert = driver.switchTo().alert();
 		String texto = alert.getText();
 		Assert.assertEquals("Alert Simples", alert.getText());
 		alert.accept();
 		driver.findElement(By.id("elementosForm:nome")).sendKeys(texto);
-		driver.quit();
 	}
 	
 	@Test
 	public void deveInteragirComAlertConfirm() {
-		WebDriver driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get(url);
 		driver.findElement(By.id("confirm")).click();
 		Alert alert = driver.switchTo().alert();
 		alert.accept();
@@ -39,16 +48,10 @@ public class TestAlert {
 		alert.dismiss();
 		Assert.assertEquals("Negado", alert.getText());
 		alert.accept();
-		driver.quit();
 	}
 	
 	@Test
-	public void deveInteragirComPrompt() {
-		WebDriver driver = new FirefoxDriver();
-		driver.manage().window().maximize();
-		driver.get(url);
-		 
-		
+	public void deveInteragirComPrompt() {		
 		driver.findElement(By.id("prompt")).click();
 		Alert alert = driver.switchTo().alert();
 		Assert.assertEquals("Digite um numero", alert.getText());
@@ -58,7 +61,6 @@ public class TestAlert {
 		alert.accept();
 		Assert.assertEquals(":D", alert.getText());
 		alert.accept();
-		driver.quit();
 	}
 	
 }
