@@ -18,12 +18,15 @@ public class DesafioCadastro {
 	
 	private WebDriver driver;
 	
+	private CampoTreinamentoPage page;
+	
 	@Before
 	public void inicializar() {
 		driver = new FirefoxDriver();
 		driver.manage().window().maximize();
 		driver.get(url);
 		dsl = new DSL(driver);
+		page = new CampoTreinamentoPage(driver);
 	}
 	
 	@After
@@ -34,17 +37,15 @@ public class DesafioCadastro {
 	
 	@Test
 	public void deveFazerCadastroCompleto() {
-		dsl.escreve("elementosForm:nome", "Eduardo");		
-		dsl.escreve("elementosForm:sobrenome", "Rufino");	
-		dsl.clicaRadio("elementosForm:sexo:0");		
-		dsl.clicaRadio("elementosForm:comidaFavorita:0");		
-		dsl.selecionarCombo("elementosForm:escolaridade", "Superior");		
-		dsl.selecionarCombo("elementosForm:esportes", "O que eh esporte?");
-		
-		
-		dsl.escreve("elementosForm:sugestoes", "Aprender Selenium com Java!");
-		
-		dsl.clicarBotao("elementosForm:cadastrar");
+		page.setNome("Eduardo");
+		page.setSobreNome("Rufino");
+		page.setSexoMasculino();	
+		page.setComidaFavoritaPizza();	
+		page.setEscolaridade("Superior");	
+		page.setEsporte("O que eh esporte?");
+		page.setSugestao("Aprender Selenium com Java!");
+	
+		page.cadastrar();
 		
 		Assert.assertTrue(driver.findElement(By.id("resultado")).getText().startsWith("Cadastrado!"));
 		Assert.assertEquals("Nome: Eduardo", driver.findElement(By.id("descNome")).getText());

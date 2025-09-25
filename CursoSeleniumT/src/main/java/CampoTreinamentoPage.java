@@ -3,77 +3,49 @@ import org.openqa.selenium.WebDriver;
 public class CampoTreinamentoPage {
 	
 	private DSL dsl;
-	
+
 	public CampoTreinamentoPage(WebDriver driver) {
 		dsl = new DSL(driver);
 	}
 
+	//Escreve um texto no imput de Nome
 	public void setNome(String nome) {
 		dsl.escrever("elementosForm:nome", nome);
-	}
+	} 
 	
-	public void setSobrenome(String sobrenome) {
+	//Escreve um texto no input de sobrenome
+	public void setSobreNome(String sobrenome) {
 		dsl.escrever("elementosForm:sobrenome", sobrenome);
 	}
 	
-	public void setSexoMasculino(){
+	//Seta o radio de sexo como masculino
+	public void setSexoMasculino() {
 		dsl.clicarRadio("elementosForm:sexo:0");
 	}
 	
-	public void setSexoFeminino(){
-		dsl.clicarRadio("elementosForm:sexo:1");
+	//Seta o checkbox de comida favorita como Pizza
+	public void setComidaFavoritaPizza() {
+		dsl.clicarRadio("elementosForm:comidaFavorita:0");	
 	}
-	
-	public void setComidaCarne(){
-		dsl.clicarRadio("elementosForm:comidaFavorita:0");
-	}
-	
-	public void setComidaPizza(){
-		dsl.clicarRadio("elementosForm:comidaFavorita:2");
-	}
-	
-	public void setComidaVegetariano(){
-		dsl.clicarRadio("elementosForm:comidaFavorita:3");
-	}
-	
+
+	//Seta escolaridade de acordo com o valor recebido
 	public void setEscolaridade(String valor) {
-		dsl.selecionarCombo("elementosForm:escolaridade", valor);
+		dsl.selecionarCombo("elementosForm:escolaridade", valor);	
 	}
 	
-	public void setEsporte(String... valores) {
-		for(String valor: valores)
-			dsl.selecionarCombo("elementosForm:esportes", valor);
+	//Seta esrpote de acordo com o valor seleiconado
+	public void setEsporte(String valor) {
+		dsl.selecionarCombo("elementosForm:esportes", valor);
 	}
 	
-	public void cadastrar(){
+	//Escreve um texto no textField de Sugestão
+	public void setSugestao(String valor) {
+		dsl.escrever("elementosForm:sugestoes", valor);
+	}
+	
+	//Clica no botão de cadastrar
+	public void cadastrar() {
 		dsl.clicarBotao("elementosForm:cadastrar");
 	}
-	
-	public String obterResultadoCadastro(){
-		return dsl.obterTexto("resultado");
-	}
-	
-	public String obterNomeCadastro(){
-		return dsl.obterTexto("descNome");
-	}
-	
-	public String obterSobrenomeCadastro(){
-		return dsl.obterTexto("descSobrenome");
-	}
-	
-	public String obterSexoCadastro(){
-		return dsl.obterTexto("descSexo");
-	}
-	
-	public String obterComidaCadastro(){
-		return dsl.obterTexto("descComida");
-	}
-	
-	public String obterEscolaridadeCadastro(){
-		return dsl.obterTexto("descEscolaridade");
-	}
-	
-	public String obterEsportesCadastro(){
-		return dsl.obterTexto("descEsportes");
-	}
 }
+	
